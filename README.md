@@ -16,37 +16,35 @@ active-speaker director switches shots for you.
 
 ### 1. Download
 
-Open the [**Releases**](../../releases/latest) page and download the file for your computer:
+Open the [**Releases**](../../releases/latest) page and download the installer for your computer:
 
-| Your computer | Download | What's inside |
-|---|---|---|
-| Mac with Apple Silicon (M1–M4) | `isostream-interview-macos-arm64.zip` | **OBS plugin** + bridge |
-| Mac with Intel chip | `isostream-interview-macos-x64.zip` | bridge |
-| Windows PC (64-bit, Intel or AMD) | `isostream-interview-windows-x64.zip` | bridge |
-| Linux (x86-64) | `isostream-interview-linux-x64.tar.gz` | bridge |
-
-Not sure which Mac you have? Click  → **About This Mac**. "Chip: Apple M…" means Apple Silicon.
-
-The **plugin** puts an **Interview** panel inside OBS. It is the easiest way to run ISOStream Interview Mode.
-For now it is only built for Apple Silicon Macs. On other computers, use the
-[bridge](#using-the-bridge-instead-of-the-plugin) instead.
+| Your computer | Download |
+|---|---|
+| Mac (Apple Silicon or Intel) | `isostream-interview-macos.pkg` |
+| Windows 10 or 11 (64-bit) | `isostream-interview-windows-x64-setup.exe` |
+| Linux (x86-64) | `isostream-interview-linux-x64.tar.gz` (no plugin yet: see [Linux](#linux)) |
 
 ### 2. Install the OBS plugin
 
-**Requires:** OBS Studio 30 or newer.
+**Requires:** OBS Studio 30 or newer. **Quit OBS first.**
 
-1. **Quit OBS.**
-2. Unzip `isostream-interview-macos-arm64.zip`.
-3. In Finder, press **⇧⌘G** and go to `~/Library/Application Support/obs-studio/plugins`.
-   Create the `plugins` folder if it doesn't exist.
-4. Copy `obs-plugin/isostream-interview.plugin` into that folder.
-5. macOS marks downloaded files as untrusted, which can stop OBS from loading the plugin. Clear that
-   mark once by pasting this into **Terminal**:
-   ```bash
-   xattr -dr com.apple.quarantine ~/Library/Application\ Support/obs-studio/plugins/isostream-interview.plugin
-   ```
-6. Open OBS. The **Interview** panel appears on the right.
-   If you don't see it, use **Tools → ISOStream Interview → Show Interview dock**.
+**Windows**
+1. Double-click `isostream-interview-windows-x64-setup.exe`.
+2. If Windows shows "Windows protected your PC", click **More info → Run anyway**.
+   (The installer isn't code-signed yet, so Windows doesn't recognise the publisher.)
+3. Click **Next**, then **Install**, then **Finish**.
+
+**Mac**
+1. Double-click `isostream-interview-macos.pkg`.
+2. If macOS says it can't open the installer, right-click it (or Control-click) and choose **Open**,
+   then **Open** again. You can also allow it in **System Settings → Privacy & Security**.
+3. Click **Continue**, then **Install**.
+
+Then open OBS. The **Interview** panel appears on the right. If you don't see it, use
+**Tools → ISOStream Interview → Show Interview dock**.
+
+To remove it later: on Windows, **Settings → Apps → ISOStream Interview Mode → Uninstall**. On a Mac,
+delete `isostream-interview.plugin` from `~/Library/Application Support/obs-studio/plugins`.
 
 ### 3. Turn on Browser Source Hardware Acceleration
 
@@ -96,31 +94,18 @@ feed. To change plans, click **Upgrade** in the panel.
 
 ---
 
-## Using the bridge instead of the plugin
+## Linux
 
-Use the bridge on Windows, Linux and Intel Macs, or wherever you can't install the plugin. It is a
-small program that lets the ISOStream Interview Mode control room switch your OBS scenes over OBS's built-in
-WebSocket.
+There's no Linux plugin build yet. The Linux download has the **ISOStream bridge**, a small program
+that lets the ISOStream control room switch your OBS scenes over OBS's built-in WebSocket.
 
 1. In OBS, go to **Tools → WebSocket Server Settings**. Tick **Enable WebSocket server**, then click
-   **Show Connect Info** and note the **port** and **password**.
-2. Unzip the download. In the folder, rename `.env.example` to `.env` and open it in a text editor:
-   ```ini
-   OBS_WEBSOCKET_URL=ws://localhost:4455      # change 4455 if your port differs
-   OBS_WEBSOCKET_PASSWORD=your-obs-password
-   PUBLIC_BASE_URL=https://…                  # your studio site address
-   ```
-   Keep `.env` in the **same folder** as the program.
-3. Start the bridge:
-   - **Windows:** double-click `isostream-bridge.exe`. If SmartScreen warns you, click
-     **More info → Run anyway**.
-   - **Mac:** in Terminal, run `./isostream-bridge`. The first time, right-click it → **Open** to allow it.
-   - **Linux:** in a terminal, run `./isostream-bridge`.
-4. When it works, the bridge prints `listening on ws://localhost:4456` and `connected to ws://localhost:4455`.
-   Keep the window open during the show.
+   **Show Connect Info** and note the **password**.
+2. Unpack the download. Rename `settings.env.example` to `.env` (same folder as the program), open it
+   in a text editor and put the OBS password after `OBS_WEBSOCKET_PASSWORD=`.
+3. In a terminal, run `./isostream-bridge` and keep it open during the show.
 
 Also turn on [Browser Source Hardware Acceleration](#3-turn-on-browser-source-hardware-acceleration).
-It matters just as much with the bridge.
 
 ---
 
@@ -128,12 +113,11 @@ It matters just as much with the bridge.
 
 | Problem | Fix |
 |---|---|
-| No **Interview** panel | **Tools → ISOStream Interview → Show Interview dock**. Still nothing? Re-check step 2, including the Terminal command. |
+| No **Interview** panel | **Tools → ISOStream Interview → Show Interview dock**. Still nothing? Make sure OBS is version 30 or newer, then run the installer again with OBS closed. |
 | Guest video is choppy, or OBS uses a lot of CPU | Turn on hardware acceleration (step 3) and restart OBS. |
 | Panel says it can't reach the server | Check your internet connection, then **Tools → ISOStream Interview → Reload Interview dock**. |
 | "Connect account" never finishes | The code expires after 10 minutes. Click **Connect account** again and approve the new code. |
 | A guest can't be heard | Look at their tile's meter. If it is grey, the guest is muted: click their mic icon to ask them to unmute. |
-| Bridge says `connected` never appears | The WebSocket server is off in OBS, or the password or port in `.env` is wrong. |
+| Linux bridge never says `connected` | The WebSocket server is off in OBS, or the password in `.env` is wrong. |
 
-Every download has a `READ-ME-FIRST.txt` with the short version of these steps. Each release also
-lists SHA-256 checksums, so you can check that your download is complete.
+Each release lists SHA-256 checksums, so you can check that your download is complete.
