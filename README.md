@@ -88,9 +88,9 @@ expect choppy video and high CPU use.
 | **Back to my shows** | Return to the show list. |
 | **Reload Interview dock** | Use if the panel looks stuck after a network drop. |
 
-**Plans.** The Free plan allows 2 guests on air and 45-minute interviews. **Creator** adds 4 guests,
-chat and spotlight. **Studio Pro** adds 8 guests, separate (ISO) audio per guest and a program return
-feed. To change plans, click **Upgrade** in the panel.
+**Plans.** Every plan has every feature. The **Free** plan fits 2 guests at the same time, for 60 minutes a
+month (up to 30 per interview), so you can test everything. **Creator** fits 4 guests and **Studio Pro** fits 8,
+both with no time limit. To change plans, click **Upgrade** in the panel.
 
 ---
 
